@@ -26,11 +26,9 @@ import static com.huya.rxjava2.schedulers.suppress.util.Utils.forEachReactiveX;
 public class SuppressThreadFactoryTest {
 
     @Parameterized.Parameters
-    public static Iterable<Object> dataSet() {
+    public static Iterable<Runnable> dataSet() {
         return Arrays.asList(
-            SchedulerSuppress.SuppressIo,
-            SchedulerSuppress.SuppressCompute,
-            SchedulerSuppress.SuppressBackground
+            SchedulerSuppress::SuppressIo
         );
     }
 

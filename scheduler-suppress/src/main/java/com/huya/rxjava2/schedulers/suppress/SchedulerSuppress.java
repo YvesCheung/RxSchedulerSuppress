@@ -4,6 +4,7 @@ import io.reactivex.Scheduler;
 import io.reactivex.annotations.Nullable;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
+import io.reactivex.plugins.RxJavaPlugins;
 
 /**
  * @author YvesCheung
@@ -15,14 +16,27 @@ public final class SchedulerSuppress {
         throw new IllegalStateException("No instances!");
     }
 
-    public static final Function<? super Scheduler, ? extends Scheduler> SuppressIo =
-        new IoSuppression();
+    public static void SuppressIo() {
+        Function<? super Scheduler, ? extends Scheduler> old =
+            RxJavaPlugins.getIoSchedulerHandler();
+        RxJavaPlugins.setIoSchedulerHandler(new IoSuppression(old));
+    }
 
-    public static final Function<? super Scheduler, ? extends Scheduler> SuppressCompute =
-        new ComputeSuppression();
+    public static void SuppressCompute() {
+        Function<? super Scheduler, ? extends Scheduler> old =
+            RxJavaPlugins.getComputationSchedulerHandler();
+        RxJavaPlugins.setComputationSchedulerHandler(new ComputeSuppression(old));
+    }
 
-    public static final Function<? super Scheduler, ? extends Scheduler> SuppressBackground =
-        new BackgroundThreadSuppression();
+    public static void SuppressBackground() {
+        Function<? super Scheduler, ? extends Scheduler> oldCompute =
+            RxJavaPlugins.getComputationSchedulerHandler();
+        RxJavaPlugins.setComputationSchedulerHandler(new BackgroundThreadSuppression(oldCompute));
+
+        Function<? super Scheduler, ? extends Scheduler> oldIo =
+            RxJavaPlugins.getIoSchedulerHandler();
+        RxJavaPlugins.setIoSchedulerHandler(new BackgroundThreadSuppression(oldIo));
+    }
 
     public static class BackgroundThreadSuppression extends AbstractSuppression {
 
@@ -30,7 +44,7 @@ public final class SchedulerSuppress {
             super();
         }
 
-        public BackgroundThreadSuppression(@Nullable Function<Scheduler, Scheduler> previousTransformer) {
+        public BackgroundThreadSuppression(@Nullable Function<? super Scheduler, ? extends Scheduler> previousTransformer) {
             super(previousTransformer);
         }
 
@@ -48,7 +62,7 @@ public final class SchedulerSuppress {
             super();
         }
 
-        public ComputeSuppression(@Nullable Function<Scheduler, Scheduler> previousTransformer) {
+        public ComputeSuppression(@Nullable Function<? super Scheduler, ? extends Scheduler> previousTransformer) {
             super(previousTransformer);
         }
 
@@ -65,7 +79,7 @@ public final class SchedulerSuppress {
             super();
         }
 
-        public IoSuppression(@Nullable Function<Scheduler, Scheduler> previousTransformer) {
+        public IoSuppression(@Nullable Function<? super Scheduler, ? extends Scheduler> previousTransformer) {
             super(previousTransformer);
         }
 
@@ -80,13 +94,13 @@ public final class SchedulerSuppress {
         Function<Scheduler, Scheduler>, Predicate<Thread> {
 
         @Nullable
-        private final Function<Scheduler, Scheduler> previousTransformer;
+        private final Function<? super Scheduler, ? extends Scheduler> previousTransformer;
 
         public AbstractSuppression() {
             this(null);
         }
 
-        public AbstractSuppression(@Nullable Function<Scheduler, Scheduler> previousTransformer) {
+        public AbstractSuppression(@Nullable Function<? super Scheduler, ? extends Scheduler> previousTransformer) {
             this.previousTransformer = previousTransformer;
         }
 

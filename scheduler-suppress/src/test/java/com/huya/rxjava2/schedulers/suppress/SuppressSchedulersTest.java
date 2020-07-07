@@ -36,7 +36,7 @@ public class SuppressSchedulersTest {
         forEachReactiveX(Schedulers.io(), threadRecord ->
             Assert.assertThat(threadRecord, not(allElementIsTheSame())));
 
-        RxJavaPlugins.setIoSchedulerHandler(SchedulerSuppress.SuppressIo);
+        SchedulerSuppress.SuppressIo();
 
         forEachReactiveX(Schedulers.io(), threadRecord ->
             Assert.assertThat(threadRecord, allElementIsTheSame()));
@@ -48,7 +48,7 @@ public class SuppressSchedulersTest {
         forEachReactiveX(Schedulers.io(), threadRecord ->
             Assert.assertThat(threadRecord, not(allElementIsTheSame())));
 
-        RxJavaPlugins.setIoSchedulerHandler(SchedulerSuppress.SuppressBackground);
+        SchedulerSuppress.SuppressBackground();
 
         forEachReactiveX(Schedulers.io(), threadRecord ->
             Assert.assertThat(threadRecord, allElementIsTheSame()));
@@ -60,7 +60,7 @@ public class SuppressSchedulersTest {
         forEachReactiveX(Schedulers.computation(), threadRecord ->
             Assert.assertThat(threadRecord, not(allElementIsTheSame())));
 
-        RxJavaPlugins.setComputationSchedulerHandler(SchedulerSuppress.SuppressCompute);
+        SchedulerSuppress.SuppressCompute();
 
         forEachReactiveX(Schedulers.computation(), threadRecord ->
             Assert.assertThat(threadRecord, allElementIsTheSame()));
@@ -72,7 +72,7 @@ public class SuppressSchedulersTest {
         forEachReactiveX(Schedulers.computation(), threadRecord ->
             Assert.assertThat(threadRecord, not(allElementIsTheSame())));
 
-        RxJavaPlugins.setComputationSchedulerHandler(SchedulerSuppress.SuppressBackground);
+        SchedulerSuppress.SuppressBackground();
 
         forEachReactiveX(Schedulers.computation(), threadRecord ->
             Assert.assertThat(threadRecord, allElementIsTheSame()));
@@ -84,17 +84,7 @@ public class SuppressSchedulersTest {
         forEachReactiveX(Schedulers.io(), threadRecord ->
             Assert.assertThat(threadRecord, not(allElementIsTheSame())));
 
-        RxJavaPlugins.setComputationSchedulerHandler(SchedulerSuppress.SuppressIo);
-
-        forEachReactiveX(Schedulers.io(), threadRecord ->
-            Assert.assertThat(threadRecord, not(allElementIsTheSame())));
-
-        RxJavaPlugins.setComputationSchedulerHandler(SchedulerSuppress.SuppressCompute);
-
-        forEachReactiveX(Schedulers.io(), threadRecord ->
-            Assert.assertThat(threadRecord, not(allElementIsTheSame())));
-
-        RxJavaPlugins.setComputationSchedulerHandler(SchedulerSuppress.SuppressBackground);
+        RxJavaPlugins.setIoSchedulerHandler(new SchedulerSuppress.ComputeSuppression());
 
         forEachReactiveX(Schedulers.io(), threadRecord ->
             Assert.assertThat(threadRecord, not(allElementIsTheSame())));
@@ -106,17 +96,7 @@ public class SuppressSchedulersTest {
         forEachReactiveX(Schedulers.computation(), threadRecord ->
             Assert.assertThat(threadRecord, not(allElementIsTheSame())));
 
-        RxJavaPlugins.setIoSchedulerHandler(SchedulerSuppress.SuppressIo);
-
-        forEachReactiveX(Schedulers.computation(), threadRecord ->
-            Assert.assertThat(threadRecord, not(allElementIsTheSame())));
-
-        RxJavaPlugins.setIoSchedulerHandler(SchedulerSuppress.SuppressCompute);
-
-        forEachReactiveX(Schedulers.computation(), threadRecord ->
-            Assert.assertThat(threadRecord, not(allElementIsTheSame())));
-
-        RxJavaPlugins.setIoSchedulerHandler(SchedulerSuppress.SuppressBackground);
+        RxJavaPlugins.setComputationSchedulerHandler(new SchedulerSuppress.IoSuppression());
 
         forEachReactiveX(Schedulers.computation(), threadRecord ->
             Assert.assertThat(threadRecord, not(allElementIsTheSame())));
