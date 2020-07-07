@@ -8,4 +8,5 @@ dependencies {
 
 dependencies {
     testImplementation("junit:junit:4.12")
+    testImplementation("org.hamcrest:hamcrest-library:1.3")
 }
