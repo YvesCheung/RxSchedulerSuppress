@@ -1,6 +1,7 @@
 package com.huya.rxjava2.schedulers.suppress;
 
 import io.reactivex.Scheduler;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.annotations.Nullable;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
@@ -49,7 +50,7 @@ public final class SchedulerSuppress {
         }
 
         @Override
-        boolean shouldJustRunInCurrentThread(Thread thread) {
+        boolean shouldJustRunInCurrentThread(@NonNull Thread thread) {
             String threadName = thread.getName();
             return threadName != null &&
                 (threadName.startsWith("RxComputation") || threadName.startsWith("RxCached"));
@@ -67,7 +68,7 @@ public final class SchedulerSuppress {
         }
 
         @Override
-        boolean shouldJustRunInCurrentThread(Thread thread) {
+        boolean shouldJustRunInCurrentThread(@NonNull Thread thread) {
             String threadName = thread.getName();
             return threadName != null && threadName.startsWith("RxComputation");
         }
@@ -84,7 +85,7 @@ public final class SchedulerSuppress {
         }
 
         @Override
-        boolean shouldJustRunInCurrentThread(Thread thread) {
+        boolean shouldJustRunInCurrentThread(@NonNull Thread thread) {
             String threadName = thread.getName();
             return threadName != null && threadName.startsWith("RxCached");
         }
@@ -112,10 +113,10 @@ public final class SchedulerSuppress {
         }
 
         @Override
-        public final boolean test(Thread thread) {
+        public final boolean test(@NonNull Thread thread) {
             return shouldJustRunInCurrentThread(thread);
         }
 
-        abstract boolean shouldJustRunInCurrentThread(Thread task);
+        abstract boolean shouldJustRunInCurrentThread(@NonNull Thread task);
     }
 }

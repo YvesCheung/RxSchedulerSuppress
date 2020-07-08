@@ -3,10 +3,12 @@ package com.huya.rxjava2.schedulers.suppress;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.internal.schedulers.TrampolineScheduler;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -21,12 +23,9 @@ public final class ImmediateScheduler extends Scheduler {
 
     private final Predicate<Thread> runInCurrentThread;
 
-    private final Worker worker;
-
     public ImmediateScheduler(@NonNull Scheduler schedulerImpl, @NonNull Predicate<Thread> shouldJustRunInCurrentThread) {
         actual = Objects.requireNonNull(schedulerImpl);
         runInCurrentThread = Objects.requireNonNull(shouldJustRunInCurrentThread);
-        worker = new ImmediateWorker(actual, runInCurrentThread);
     }
 
     @Override
@@ -62,7 +61,7 @@ public final class ImmediateScheduler extends Scheduler {
     @Override
     @NonNull
     public Worker createWorker() {
-        return worker;
+        return new ImmediateWorker(actual, runInCurrentThread);
     }
 
     //<editor-fold desc="Delegate method">
@@ -80,64 +79,62 @@ public final class ImmediateScheduler extends Scheduler {
     public long now(@NonNull TimeUnit unit) {
         return actual.now(unit);
     }
+
+    @Override
+    public <S extends Scheduler & Disposable> S when(@NonNull Function<Flowable<Flowable<Completable>>, Completable> combine) {
+        return actual.when(combine);
+    }
     //</editor-fold>
 
-    private static class ImmediateWorker extends Scheduler.Worker {
+    private static final class ImmediateWorker extends Scheduler.Worker {
 
-        private final CompositeDisposable tasks = new CompositeDisposable();
         private final Predicate<Thread> shouldJustRunInCurrentThread;
-        private final Scheduler actual;
-        private final Worker currentThreadWorker =
-            TrampolineScheduler.instance().createWorker();
+        private final Worker currentThreadWorker = TrampolineScheduler.instance().createWorker();
+        private final Worker actualWorker;
 
         ImmediateWorker(Scheduler actual, Predicate<Thread> shouldJustRunInCurrentThread) {
-            this.actual = actual;
             this.shouldJustRunInCurrentThread = shouldJustRunInCurrentThread;
+            this.actualWorker = actual.createWorker();
         }
 
         @Override
         @NonNull
         public Disposable schedule(@NonNull Runnable run) {
-            Disposable task = predicate(shouldJustRunInCurrentThread)
+            return predicate(shouldJustRunInCurrentThread)
                 ? currentThreadWorker.schedule(run)
-                : actual.createWorker().schedule(run);
-            tasks.add(task);
-            return task;
+                : actualWorker.schedule(run);
         }
 
         @Override
         @NonNull
         public Disposable schedule(@NonNull Runnable run, long delay, @NonNull TimeUnit unit) {
-            Disposable task = predicate(shouldJustRunInCurrentThread)
+            return predicate(shouldJustRunInCurrentThread)
                 ? currentThreadWorker.schedule(run, delay, unit)
-                : actual.createWorker().schedule(run, delay, unit);
-            tasks.add(task);
-            return task;
+                : actualWorker.schedule(run, delay, unit);
         }
 
         @Override
         @NonNull
         public Disposable schedulePeriodically(@NonNull Runnable run, long initialDelay, long period, @NonNull TimeUnit unit) {
-            Disposable task = predicate(shouldJustRunInCurrentThread)
+            return predicate(shouldJustRunInCurrentThread)
                 ? currentThreadWorker.schedulePeriodically(run, initialDelay, period, unit)
-                : actual.createWorker().schedulePeriodically(run, initialDelay, period, unit);
-            tasks.add(task);
-            return task;
+                : actualWorker.schedulePeriodically(run, initialDelay, period, unit);
         }
 
         @Override
         public void dispose() {
-            tasks.dispose();
+            currentThreadWorker.dispose();
+            actualWorker.dispose();
         }
 
         @Override
         public boolean isDisposed() {
-            return tasks.isDisposed();
+            return actualWorker.isDisposed();
         }
 
         @Override
         public long now(@NonNull TimeUnit unit) {
-            return actual.now(unit);
+            return actualWorker.now(unit);
         }
     }
 
