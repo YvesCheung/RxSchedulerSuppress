@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Scheduler;
-import io.reactivex.functions.Function;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
@@ -28,19 +27,21 @@ public class SuppressThreadFactoryTest {
     @Parameterized.Parameters
     public static Iterable<Runnable> dataSet() {
         return Arrays.asList(
-            SchedulerSuppress::SuppressIo
+            SchedulerSuppress::SuppressIo,
+            SchedulerSuppress::SuppressCompute,
+            SchedulerSuppress::SuppressBackground
         );
     }
 
     @Parameterized.Parameter
-    public Function<? super Scheduler, ? extends Scheduler> handler;
+    public Runnable suppressScheduler;
 
     @Test
     public void testDoNotChangeTheThreadFactory() throws InterruptedException {
 
         assertThreadPoolIsRight();
 
-        RxJavaPlugins.setIoSchedulerHandler(handler);
+        suppressScheduler.run();
 
         assertThreadPoolIsRight();
     }
