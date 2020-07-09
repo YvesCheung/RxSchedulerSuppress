@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(28)
-    buildToolsVersion("28.0.3")
+    compileSdkVersion(29)
+    buildToolsVersion("29.0.3")
 
     defaultConfig {
         minSdkVersion(14)
-        targetSdkVersion(28)
+        targetSdkVersion(29)
 
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_1_8
@@ -27,8 +27,14 @@ dependencies {
 }
 
 dependencies {
-    testImplementation("junit:junit:4.12")
-    testImplementation("org.hamcrest:hamcrest-library:1.3")
-    testImplementation("io.reactivex.rxjava2:rxandroid:2.1.1")
-    testImplementation("io.reactivex.rxjava2:rxjava:2.2.19")
+    android.defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    androidTestImplementation("androidx.test:core:1.2.0")
+    androidTestImplementation("androidx.test:runner:1.2.0")
+    androidTestImplementation("androidx.test:rules:1.2.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
+    androidTestImplementation("junit:junit:4.12")
+    androidTestImplementation("org.hamcrest:hamcrest-library:1.3")
+    androidTestImplementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+    androidTestImplementation("io.reactivex.rxjava2:rxjava:2.2.19")
 }
