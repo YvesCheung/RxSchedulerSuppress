@@ -4,15 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context="com.huya.rxjava2.schedulers.suppress.MainActivity">
+
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/switch_suppress_text"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="#22ffdd00"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:text="Suppress RxJava Scheduler"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toStartOf="@+id/switch_suppress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry" />
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_suppress"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="#22ffdd00"
+        android:paddingEnd="16dp"
+        android:paddingRight="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/switch_suppress_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/switch_suppress_text"
+        tools:ignore="RtlSymmetry" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_fetch_item"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@android:color/background_light"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/btn_fetch_item"
+        app:layout_constraintTop_toBottomOf="@+id/switch_suppress_text"
+        tools:itemCount="40" />
+
+    <TextView
+        android:id="@+id/btn_fetch_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/btn_main"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="Click Here To Create An Item"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="HardcodedText" />
 </androidx.constraintlayout.widget.ConstraintLayout>
