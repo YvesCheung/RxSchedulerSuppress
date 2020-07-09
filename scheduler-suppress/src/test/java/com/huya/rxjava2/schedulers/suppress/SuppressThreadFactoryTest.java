@@ -1,7 +1,6 @@
 package com.huya.rxjava2.schedulers.suppress;
 
 import com.huya.rxjava2.schedulers.suppress.util.Pair;
-import com.huya.rxjava2.schedulers.suppress.util.Utils;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,10 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Scheduler;
-import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.huya.rxjava2.schedulers.suppress.util.Utils.forEachReactiveX;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.startsWith;
 
 /**
  * @author YvesCheung
@@ -61,7 +61,7 @@ public class SuppressThreadFactoryTest {
 
             forEachReactiveX(scheduler, threadRecord -> {
                 System.out.println("record = " + threadRecord);
-                Assert.assertTrue(Utils.all(threadRecord, s -> s.startsWith(name)));
+                Assert.assertThat(threadRecord, everyItem(startsWith(name)));
             });
         }
     }
