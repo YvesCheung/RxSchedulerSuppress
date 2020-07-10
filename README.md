@@ -40,34 +40,34 @@ private fun checkMd5(item: Item): Single<Item> {
 
 因此就有了 **RxSchedulerSuppress** 的想法：通过 `RxJavaPlugins` 装饰 `Schedulers.IO` 调度器—— **若当前操作已经运行在io线程上，那么就不再执行切换到io线程的重复调度。**
 
-<table border="1">
+
+<table>
     <tr>
         <th style="text-align:center">Code</th>
         <th style="text-align:center">Output</th>
     </tr>
     <tr>
         <td rowspan="4">
-        <div class="highlight highlight-source-kotlin"><pre><span class="pl-en">Observable</span>
-    .create<span class="pl-k">&lt;</span><span class="pl-c1">String</span><span class="pl-k">&gt;</span> { emitter <span class="pl-k">-</span><span class="pl-k">&gt;</span>
-        <span class="pl-c1">println</span>(<span class="pl-s"><span class="pl-pds">"</span>create on <span class="pl-pds">"</span></span> <span class="pl-k">+</span> 
-            <span class="pl-en">Thread</span>.currentThread().name)
-        emitter.onNext(<span class="pl-s"><span class="pl-pds">"</span>Test<span class="pl-pds">"</span></span>)
+        <div><pre>
+Observable
+    .create<String> { emitter ->
+        println("create on ${Thread.currentThread().name}")
+        emitter.onNext("Test")
         emitter.onComplete()
     }
-    .subscribeOn(<span class="pl-en">Schedulers</span>.io())
-    .observeOn(<span class="pl-en">Schedulers</span>.io())
-    .map { result <span class="pl-k">-</span><span class="pl-k">&gt;</span>
-        <span class="pl-c1">println</span>(<span class="pl-s"><span class="pl-pds">"</span>map on <span class="pl-pds">"</span></span> <span class="pl-k">+</span> 
-            <span class="pl-en">Thread</span>.currentThread().name)
+    .subscribeOn(Schedulers.io())
+    .observeOn(Schedulers.io())
+    .map { result ->
+        println("map on ${Thread.currentThread().name}")
         result
     }
-    .observeOn(<span class="pl-en">Schedulers</span>.io())
+    .observeOn(Schedulers.io())
     .flatMapCompletable {
-        <span class="pl-c1">println</span>(<span class="pl-s"><span class="pl-pds">"</span>flatMap on <span class="pl-pds">"</span></span> <span class="pl-k">+</span> 
-            <span class="pl-en">Thread</span>.currentThread().name)
-        <span class="pl-en">Completable</span>.complete()
+        println("flatMap on ${Thread.currentThread().name}")
+        Completable.complete()
     }
-    .subscribe()</pre></div>
+    .subscribe()
+        </pre></div>
         </td>
         <th>Before</th>
     </tr>
