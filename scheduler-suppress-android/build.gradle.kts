@@ -7,7 +7,7 @@ android {
     buildToolsVersion("29.0.3")
 
     defaultConfig {
-        minSdkVersion(9)
+        minSdkVersion(14)
         targetSdkVersion(29)
 
         compileOptions {
@@ -22,8 +22,8 @@ android {
 dependencies {
     api(project(":scheduler-suppress"))
 
-    compileOnly("io.reactivex.rxjava2:rxandroid:2.1.1")
-    compileOnly("io.reactivex.rxjava2:rxjava:2.2.19")
+    compileOnly("io.reactivex.rxjava3:rxandroid:3.0.0")
+    compileOnly("io.reactivex.rxjava3:rxjava:3.0.4")
 }
 
 dependencies {
@@ -35,6 +35,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
     androidTestImplementation("junit:junit:4.12")
     androidTestImplementation("org.hamcrest:hamcrest-library:1.3")
-    androidTestImplementation("io.reactivex.rxjava2:rxandroid:2.1.1")
-    androidTestImplementation("io.reactivex.rxjava2:rxjava:2.2.19")
+    androidTestImplementation("io.reactivex.rxjava3:rxandroid:3.0.0")
+    androidTestImplementation("io.reactivex.rxjava3:rxjava:3.0.4")
 }

@@ -7,7 +7,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.huya.rxjava2.schedulers.suppress.android.sample"
+        applicationId "com.huya.rxjava3.schedulers.suppress.android.sample"
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 1
@@ -41,8 +41,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     implementation "androidx.activity:activity-ktx:1.1.0"
 
-    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
-    implementation "io.reactivex.rxjava2:rxjava:2.2.19"
-    implementation 'com.github.YvesCheung:LiveDataToRxJava:v1.1'
+    implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
     implementation project(":scheduler-suppress-android")
 }
