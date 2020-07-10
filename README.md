@@ -95,7 +95,7 @@ private fun checkMd5(item: Item): Single<Item> {
     </tr>
 </table>
 
-```Java
+```java
 Observable
     .create<String> { emitter ->
         println("create on " + 
