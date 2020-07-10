@@ -47,28 +47,28 @@ private fun checkMd5(item: Item): Single<Item> {
     </tr>
     <tr>
         <td rowspan="4">
-        <pre><code class="Java hljs"><span class="hljs-type">Observable</span>
-    .create&lt;<span class="hljs-type">String</span>&gt; { emitter -&gt;
-        <span class="hljs-built_in">println</span>(<span class="hljs-string">"create on "</span> + 
-            <span class="hljs-string">"${Thread.currentThread().name}"</span>)
-        emitter.onNext(<span class="hljs-string">"Test"</span>)
+        <div class="highlight highlight-source-kotlin"><pre><span class="pl-en">Observable</span>
+    .create<span class="pl-k">&lt;</span><span class="pl-c1">String</span><span class="pl-k">&gt;</span> { emitter <span class="pl-k">-</span><span class="pl-k">&gt;</span>
+        <span class="pl-c1">println</span>(<span class="pl-s"><span class="pl-pds">"</span>create on <span class="pl-pds">"</span></span> <span class="pl-k">+</span> 
+            <span class="pl-en">Thread</span>.currentThread().name)
+        emitter.onNext(<span class="pl-s"><span class="pl-pds">"</span>Test<span class="pl-pds">"</span></span>)
         emitter.onComplete()
     }
-    .subscribeOn(<span class="hljs-type">Schedulers</span>.io())
-    .observeOn(<span class="hljs-type">Schedulers</span>.io())
-    .<span class="hljs-built_in">map</span> { result -&gt;
-        <span class="hljs-built_in">println</span>(<span class="hljs-string">"map on "</span> + 
-            <span class="hljs-string">"${Thread.currentThread().name}"</span>)
+    .subscribeOn(<span class="pl-en">Schedulers</span>.io())
+    .observeOn(<span class="pl-en">Schedulers</span>.io())
+    .map { result <span class="pl-k">-</span><span class="pl-k">&gt;</span>
+        <span class="pl-c1">println</span>(<span class="pl-s"><span class="pl-pds">"</span>map on <span class="pl-pds">"</span></span> <span class="pl-k">+</span> 
+            <span class="pl-en">Thread</span>.currentThread().name)
         result
     }
-    .observeOn(<span class="hljs-type">Schedulers</span>.io())
+    .observeOn(<span class="pl-en">Schedulers</span>.io())
     .flatMapCompletable {
-        <span class="hljs-built_in">println</span>(<span class="hljs-string">"flatMap on "</span> + 
-            <span class="hljs-string">"${Thread.currentThread().name}"</span>)
-        <span class="hljs-type">Completable</span>.complete()
+        <span class="pl-c1">println</span>(<span class="pl-s"><span class="pl-pds">"</span>flatMap on <span class="pl-pds">"</span></span> <span class="pl-k">+</span> 
+            <span class="pl-en">Thread</span>.currentThread().name)
+        <span class="pl-en">Completable</span>.complete()
     }
-    .subscribe()
-</code></pre>
+    .subscribe()</pre></div>
+        </td>
         <th>Before</th>
     </tr>
     <tr>
@@ -94,27 +94,3 @@ private fun checkMd5(item: Item): Single<Item> {
         </td>
     </tr>
 </table>
-
-```kotlin
-Observable
-    .create<String> { emitter ->
-        println("create on " + 
-            Thread.currentThread().name)
-        emitter.onNext("Test")
-        emitter.onComplete()
-    }
-    .subscribeOn(Schedulers.io())
-    .observeOn(Schedulers.io())
-    .map { result ->
-        println("map on " + 
-            Thread.currentThread().name)
-        result
-    }
-    .observeOn(Schedulers.io())
-    .flatMapCompletable {
-        println("flatMap on " + 
-            Thread.currentThread().name)
-        Completable.complete()
-    }
-    .subscribe()
-```
