@@ -95,11 +95,11 @@ private fun checkMd5(item: Item): Single<Item> {
     </tr>
 </table>
 
-```java
+```kotlin
 Observable
     .create<String> { emitter ->
         println("create on " + 
-            "${Thread.currentThread().name}")
+            Thread.currentThread().name)
         emitter.onNext("Test")
         emitter.onComplete()
     }
@@ -107,13 +107,13 @@ Observable
     .observeOn(Schedulers.io())
     .map { result ->
         println("map on " + 
-            "${Thread.currentThread().name}")
+            Thread.currentThread().name)
         result
     }
     .observeOn(Schedulers.io())
     .flatMapCompletable {
         println("flatMap on " + 
-            "${Thread.currentThread().name}")
+            Thread.currentThread().name)
         Completable.complete()
     }
     .subscribe()
