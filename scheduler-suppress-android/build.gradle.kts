@@ -45,9 +45,8 @@ dependencies {
 
 tasks {
     val sourcesJar = create<Jar>("sourcesJar") {
-        dependsOn("classes")
         classifier = "sources"
-        from(android.sourceSets.named("main").get().java.sourceFiles)
+        from(android.sourceSets.named("main").get().java.srcDirs)
     }
 
     artifacts {
