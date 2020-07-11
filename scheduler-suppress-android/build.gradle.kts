@@ -1,6 +1,10 @@
 plugins {
     id("com.android.library")
+    id("maven")
+    id("com.github.dcendents.android-maven")
 }
+
+group = "com.huya.rxjava2"
 
 android {
     compileSdkVersion(29)
@@ -37,4 +41,16 @@ dependencies {
     androidTestImplementation("org.hamcrest:hamcrest-library:1.3")
     androidTestImplementation("io.reactivex.rxjava2:rxandroid:2.1.1")
     androidTestImplementation("io.reactivex.rxjava2:rxjava:2.2.19")
+}
+
+tasks {
+    val sourcesJar = create<Jar>("sourcesJar") {
+        dependsOn("classes")
+        classifier = "sources"
+        from(android.sourceSets.named("main").get().java.sourceFiles)
+    }
+
+    artifacts {
+        archives(sourcesJar)
+    }
 }
