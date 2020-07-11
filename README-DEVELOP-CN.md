@@ -181,7 +181,13 @@ if (Looper.myLooper() == Looper.getMainLooper()) {
 
 1. build.gradle添加依赖
 ```groovy
+dependencies {
+    //targeting io.reactivex.schedulers.Schedulers
+    implementation 'com.github.YvesCheung.RxSchedulerSuppress:scheduler-suppress:1.0.0'
 
+    //targeting io.reactivex.android.schedulers.AndroidSchedulers
+    implementation 'com.github.YvesCheung.RxSchedulerSuppress:scheduler-suppress-android:1.0.0'
+}
 ```
 
 2. 在使用RxJava之前初始化
