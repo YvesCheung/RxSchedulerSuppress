@@ -1,2 +1,2 @@
-include ':sample-android', 'scheduler-suppress', 'scheduler-suppress-android'
+include ':sample-android', ':scheduler-suppress', ':scheduler-suppress-android', ':scheduler-suppress-coroutine'
 rootProject.name = "RxSchedulerSuppress"
