@@ -24,11 +24,11 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = MainAdapter()
 
-        switch_suppress.isChecked = suppressModel.switch
-        switch_suppress.setOnCheckedChangeListener { _, isChecked ->
-            suppressModel.switch = isChecked
+        group_suppress.setOnCheckedChangeListener { _, checkedId ->
+            suppressModel.checkedId = checkedId
             adapter.clear()
         }
+        group_suppress.check(suppressModel.checkedId)
 
         rv_fetch_item.adapter = adapter
 

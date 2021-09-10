@@ -6,44 +6,35 @@
     android:layout_height="match_parent"
     tools:context="com.huya.rxjava2.schedulers.suppress.MainActivity">
 
-
-    <TextView
-        android:id="@+id/switch_suppress_text"
-        android:layout_width="0dp"
+    <RadioGroup
+        android:id="@+id/group_suppress"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#22ffdd00"
-        android:paddingStart="16dp"
-        android:paddingLeft="16dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:text="Suppress RxJava Scheduler"
-        android:textColor="@android:color/black"
-        app:layout_constraintEnd_toStartOf="@+id/switch_suppress"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="RtlSymmetry" />
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/switch_suppress_text">
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch_suppress"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:background="#22ffdd00"
-        android:paddingEnd="16dp"
-        android:paddingRight="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/switch_suppress_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/switch_suppress_text"
-        tools:ignore="RtlSymmetry" />
+        <RadioButton
+            android:id="@+id/suppress_coroutine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Replace with Coroutine Scheduler"
+            tools:ignore="HardcodedText" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_fetch_item"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@android:color/background_light"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/btn_fetch_item"
-        app:layout_constraintTop_toBottomOf="@+id/switch_suppress_text"
-        tools:itemCount="40" />
+        <RadioButton
+            android:id="@+id/suppress_immediate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Replace with Immediate Scheduler"
+            tools:ignore="HardcodedText" />
+
+        <RadioButton
+            android:id="@+id/suppress_none"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Default Scheduler"
+            tools:ignore="HardcodedText" />
+    </RadioGroup>
 
     <TextView
         android:id="@+id/btn_fetch_item"
@@ -61,4 +52,30 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/switch_suppress_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#22ffdd00"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:text="Suppress RxJava Scheduler"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText,RtlSymmetry" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_fetch_item"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@android:color/background_light"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/btn_fetch_item"
+        app:layout_constraintTop_toBottomOf="@+id/group_suppress"
+        tools:itemCount="40" />
 </androidx.constraintlayout.widget.ConstraintLayout>

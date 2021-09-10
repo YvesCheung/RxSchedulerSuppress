@@ -45,4 +45,5 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:2.2.19"
     implementation 'com.github.YvesCheung:LiveDataToRxJava:v1.1'
     implementation project(":scheduler-suppress-android")
+    implementation project(path: ':scheduler-suppress-coroutine')
 }
